@@ -14,14 +14,14 @@ function usage() {
     echo ''
     echo 'Usage: pskill.sh [-q] [-v] [-h] [-sig] <expression-rationnelle>'
     echo ''
-    echo "Permet d'envoyer un signal via la commande kill aux processus dont la ligne de commande vérifie <expression-rationnelle>"
+    echo "Permet d'envoyer un signal via la commande kill aux processus dont la ligne de commande vérifie <expression-rationnelle>."
     echo '-q : query, demande confirmation pour chaque processus'
     echo '-v : verbeux, affiche ce qui est fait'
     echo "-h : affichage de ce message d'aide"
     echo '-sig : ou sig est un signal, utilisation de ce signal au lieu du signal par défaut (SIGTERM). sig peut être numérique ou symbolique selon ce qu'\''accepte la commande kill'
     echo ''
     echo 'Exemple :'
-    echo "pskill.sh -HUP -q 's.*p'"
+    echo "    pskill.sh -HUP -q 's.*p'"
     echo "enverra le signal SIGHUP aux processus pour lesquels la commande utilisée vérifie l'expression rationnelle (exemple : sleep) avec demande de confirmation."
     echo ''
 }
@@ -48,13 +48,13 @@ function confirm() {
     while true; do
         read -rp "$1 " answer </dev/tty
         case $answer in
-        [Oo]*)
+        [OoYy]*)
             return 0
             ;;
         [Nn]*) return 1 ;;
         "") return "$2" ;; # return default answer
         *)
-            echo "($answer) Veuillez sélectionner une option correcte."
+            echo "Veuillez sélectionner une option correcte."
             ;;
         esac
     done
@@ -100,7 +100,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ -z "$REGEX" ]; then
-    error "une expression rationnelle est requise"
+    error "une expression rationnelle est requise."
     usage
     exit 1
 fi
@@ -128,19 +128,20 @@ while IFS='' read -r p; do
 
     # ask for confirmation if the query switch is enabled
     if [ $QUERY -eq 1 ]; then
-        if ! (confirm "  [?] envoyer le signal $SIG au processus #$pid ($name)? [o/N]" 1); then
-            echo "  [*] processus #$pid ($name) ignoré"
+        if ! (confirm "  [?] envoyer le signal $SIG au processus #$pid ($name) ? [o/N]" 1); then
+            echo "  [*] processus #$pid ($name) ignoré."
             continue
         fi
     fi
-    info "envoi du signal $SIG au processus #$pid ($name)"
+    info "envoi du signal $SIG au processus #$pid ($name)."
 
-    # send kill with specified signal
+    # send specified signal with kill
     kill -s "$SIG" "$pid" || {
-        error "Impossible d'envoyer le signal au processus #$pid ($name)"
+        error "Impossible d'envoyer le signal au processus #$pid ($name)."
+        # note that there was an error but continue the loop
         EXIT=1
     }
 done <<<"$processes"
 
-info "Terminé"
+info "Terminé."
 exit "$EXIT"
