@@ -21,8 +21,8 @@ function usage() {
     echo '-sig : ou sig est un signal, utilisation de ce signal au lieu du signal par défaut (SIGTERM). sig peut être numérique ou symbolique selon ce qu'\''accepte la commande kill'
     echo ''
     echo 'Exemple :'
-    echo 'pskill.sh -HUP -q '\''s.*p'\'''
-    echo 'enverra le signal SIGHUP aux processus pour lesquels la commande utilisée vérifie l'\''expression rationnelle (exemple : sleep) avec demande de confirmation.'
+    echo "pskill.sh -HUP -q 's.*p'"
+    echo "enverra le signal SIGHUP aux processus pour lesquels la commande utilisée vérifie l'expression rationnelle (exemple : sleep) avec demande de confirmation."
     echo ''
 }
 
